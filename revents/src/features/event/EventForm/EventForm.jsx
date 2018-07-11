@@ -38,7 +38,6 @@ class EventForm extends Component {
         } else {
             this.props.createEvent(this.state.event)
         }
-        this.props.createEvent(this.state.event);
     }
 
     onInputChange = (evt) => {
