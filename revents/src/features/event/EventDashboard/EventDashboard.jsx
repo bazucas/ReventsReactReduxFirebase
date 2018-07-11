@@ -77,7 +77,7 @@ class EventDashboard extends Component {
     })
   }
 
-  handleUpdateEvent = (updatedEvent) => {
+  handleUpdateEvent = (updatedEvent) => () => {
     this.setState({
       events: this.state.events.map(event => {
         if (event.id === updatedEvent.id) {

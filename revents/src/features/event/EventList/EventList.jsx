@@ -15,7 +15,7 @@ class EventList extends Component {
                     deleteEvent={deleteEvent}/>
                 ))}
             </div>
-        )
+        );
     }
 }
 
