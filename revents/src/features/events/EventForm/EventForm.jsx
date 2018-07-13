@@ -4,6 +4,12 @@ import { connect } from "react-redux";
 import { createEvent, updateEvent } from "../eventActions";
 import cuid from "cuid";
 import { reduxForm, Field } from "redux-form";
+import {
+  composeValidators,
+  combineValidators,
+  isRequired,
+  hasLengthGreaterThan
+} from "revalidate";
 import TextInput from "../../../app/common/form/TextInput";
 import TextArea from "../../../app/common/form/TextArea";
 import SelectInput from "../../../app/common/form/SelectInput";
@@ -18,7 +24,7 @@ const mapState = (state, ownProps) => {
   }
 
   return {
-    initialValues : event
+    initialValues: event
   };
 };
 
@@ -36,6 +42,19 @@ const category = [
   { key: "travel", text: "Travel", value: "travel" }
 ];
 
+const validate = combineValidators({
+  title: isRequired({ message: "The event title is required" }),
+  category: isRequired({ message: "Please provide category" }),
+  description: composeValidators(
+    isRequired({ message: "Please enter description" }),
+    hasLengthGreaterThan(4)({
+      message: "Description needs to be at least 5 characters"
+    })
+  )(),
+  city: isRequired("city"),
+  venue: isRequired("venue")
+});
+
 class EventForm extends Component {
   onFormSubmit = values => {
     if (this.props.initialValues.id) {
@@ -46,7 +65,7 @@ class EventForm extends Component {
         ...values,
         id: cuid(),
         hostPhotoURL: "/assets/user.png",
-        hostedBy: 'Bob'
+        hostedBy: "Bob"
       };
       this.props.createEvent(newEvent);
       this.props.history.push("/events");
@@ -54,6 +73,7 @@ class EventForm extends Component {
   };
 
   render() {
+    const {invalid, submitting, pristine} = this.props;
     return (
       <Grid>
         <Grid.Column width={10}>
@@ -100,7 +120,7 @@ class EventForm extends Component {
                 component={TextInput}
                 placeholder="Event date"
               />
-              <Button positive type="submit">
+              <Button disabled={invalid || submitting || pristine} positive type="submit">
                 Submit
               </Button>
               <Button onClick={this.props.history.goBack} type="button">
@@ -115,4 +135,11 @@ class EventForm extends Component {
 }
 
 // higher order components
-export default connect(mapState, actions)(reduxForm({ form: 'eventForm', enableReinitialize: true })(EventForm));
+export default connect(
+  mapState,
+  actions
+)(
+  reduxForm({ form: "eventForm", enableReinitialize: true, validate })(
+    EventForm
+  )
+);
