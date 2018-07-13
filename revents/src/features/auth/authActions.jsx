@@ -1,4 +1,4 @@
-import { LOGIN_USER, SIGN_OUT_USER } from './authConstants'
+import { SIGN_OUT_USER, LOGIN_USER } from './authConstants';
 import { closeModal } from '../modals/modalActions'
 
 export const login = (creds) => {
@@ -10,6 +10,6 @@ export const login = (creds) => {
 
 export const logout = () => {
     return {
-        type: SIGN_OUT_USER,
+        type: SIGN_OUT_USER
     }
 }
