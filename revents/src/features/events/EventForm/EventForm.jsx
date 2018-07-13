@@ -77,7 +77,7 @@ class EventForm extends Component {
                 type="text"
                 component={SelectInput}
                 options={category}
-                // multiple={true}
+                multiple={true}
                 placeholder="What is your event about"
               />
               <Field
@@ -121,7 +121,4 @@ class EventForm extends Component {
 }
 
 // higher order components
-export default connect(
-  mapState,
-  actions
-)(reduxForm({ from: EventForm })(EventForm));
+export default connect(mapState, actions)(reduxForm({ form: 'eventForm' })(EventForm));
