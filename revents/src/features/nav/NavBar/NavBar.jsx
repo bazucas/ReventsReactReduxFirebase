@@ -12,7 +12,8 @@ const actions = {
 }
 
 const mapState = (state) => ({
-  auth: state.firebase.auth
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 })
 
 class NavBar extends Component {
@@ -23,15 +24,15 @@ class NavBar extends Component {
 
   handleRegister = () => {
     this.props.openModal('RegisterModal')
-  };
+  }
 
   handleSignOut = () => {
     this.props.firebase.logout();
-    this.props.history.push("/");
+    this.props.history.push('/')
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, profile } = this.props;
     const authenticated = auth.isLoaded && !auth.isEmpty;
     return (
       <Menu inverted fixed="top">
@@ -40,13 +41,11 @@ class NavBar extends Component {
             <img src="/assets/logo.png" alt="logo" />
             Re-vents
           </Menu.Item>
-          <Menu.Item as={NavLink} to={"/events"} name="Events" />
-          <Menu.Item as={NavLink} to={"/test"} name="Test" />
-
-          {authenticated && 
-          <Menu.Item as={NavLink} to={"/people"} name="People" />}
-
-          {authenticated && 
+          <Menu.Item as={NavLink} to="/events" name="Events" />
+          <Menu.Item as={NavLink} to="/test" name="Test" />
+          {authenticated &&
+          <Menu.Item as={NavLink} to="/people" name="People" />}
+          {authenticated &&
           <Menu.Item>
             <Button
               as={Link}
@@ -58,7 +57,7 @@ class NavBar extends Component {
             />
           </Menu.Item>}
           {authenticated ? (
-            <SignedInMenu auth={auth} signOut={this.handleSignOut} />
+            <SignedInMenu profile={profile} signOut={this.handleSignOut} />
           ) : (
             <SignedOutMenu signIn={this.handleSignIn} register={this.handleRegister} />
           )}
@@ -67,4 +66,5 @@ class NavBar extends Component {
     );
   }
 }
-export default withRouter(withFirebase(connect(mapState, actions)(NavBar))); //because NavBar in App.jsx doesn't have any routing
+
+export default withRouter(withFirebase(connect(mapState, actions)(NavBar)));
