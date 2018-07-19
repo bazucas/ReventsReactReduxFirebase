@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { Form, Label } from 'semantic-ui-react'
-import Script from 'react-load-script'
-import PlacesAutocomplete from 'react-places-autocomplete'
+import React, { Component } from 'react';
+import { Form, Label } from 'semantic-ui-react';
+import Script from 'react-load-script';
+import PlacesAutocomplete from 'react-places-autocomplete';
 
 const styles = {
     autocompleteContainer: {
@@ -10,31 +10,38 @@ const styles = {
 }
 
 class PlaceInput extends Component {
-    state = {
-        scriptLoaded: false
-    }
+  state = {
+    scriptLoaded: false
+  };
 
-    handleScriptLoaded = () => this.setState({scriptLoaded: true})
+  handleScriptLoaded = () => this.setState({ scriptLoaded: true });
 
   render() {
-    const {input, width, onSelect, placeholder, options, meta: {touched, error}} = this.props;
+    const {
+      input,
+      width,
+      onSelect,
+      placeholder,
+      options,
+      meta: { touched, error }
+    } = this.props;
     return (
       <Form.Field error={touched && !!error} width={width}>
         <Script
-          url='https://maps.googleapis.com/maps/api/js?key=AIzaSyCFR2-zy_K-tqfmRS_2hH_kI4Vy94hNT6I&libraries=places'
+          url="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeGFf-IvUPyRs-QWxYBQDIhWOSplEh6BA&libraries=places"
           onLoad={this.handleScriptLoaded}
         />
-        {this.state.scriptLoaded && 
+        {this.state.scriptLoaded &&
         <PlacesAutocomplete
             inputProps={{...input, placeholder}}
             options={options}
             onSelect={onSelect}
             styles={styles}
         />}
-        {touched && error && <Label basic color="red">{error}</Label>}
+        {touched && error && <Label basic color='red'>{error}</Label>}
       </Form.Field>
-    )
+    );
   }
 }
 
-export default PlaceInput
+export default PlaceInput;
