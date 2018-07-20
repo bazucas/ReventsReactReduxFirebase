@@ -1,23 +1,23 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firestoreConnect } from 'react-redux-firebase';
-import { Grid, Segment, Header, Card } from 'semantic-ui-react';
-import PersonCard from './PersonCard';
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect } from "react-redux-firebase";
+import { Grid, Segment, Header, Card } from "semantic-ui-react";
+import PersonCard from "./PersonCard";
 
 const query = ({ auth }) => {
   return [
     {
-      collection: 'users',
+      collection: "users",
       doc: auth.uid,
-      subcollections: [{ collection: 'following' }],
-      storeAs: 'following'
+      subcollections: [{ collection: "following" }],
+      storeAs: "following"
     },
     {
-      collection: 'users',
+      collection: "users",
       doc: auth.uid,
-      subcollections: [{ collection: 'followers' }],
-      storeAs: 'followers'
+      subcollections: [{ collection: "followers" }],
+      storeAs: "followers"
     }
   ];
 };
@@ -36,14 +36,18 @@ const PeopleDashboard = ({ followings, followers }) => {
           <Header dividing content="People following me" />
           <Card.Group itemsPerRow={8} stackable>
             {followers &&
-              followers.map(follower => <PersonCard key={follower.id} user={follower} />)}
+              followers.map(follower => (
+                <PersonCard key={follower.id} user={follower} />
+              ))}
           </Card.Group>
         </Segment>
         <Segment>
           <Header dividing content="People I'm following" />
           <Card.Group itemsPerRow={8} stackable>
             {followings &&
-              followings.map(following => <PersonCard key={following.id} user={following} />)}
+              followings.map(following => (
+                <PersonCard key={following.id} user={following} />
+              ))}
           </Card.Group>
         </Segment>
       </Grid.Column>
@@ -51,4 +55,7 @@ const PeopleDashboard = ({ followings, followers }) => {
   );
 };
 
-export default compose(connect(mapState), firestoreConnect(props => query(props)))(PeopleDashboard);
+export default compose(
+  connect(mapState),
+  firestoreConnect(props => query(props))
+)(PeopleDashboard);

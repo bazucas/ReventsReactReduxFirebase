@@ -1,16 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { firestoreConnect, isEmpty } from 'react-redux-firebase';
-import { compose } from 'redux';
-import { Grid } from 'semantic-ui-react';
-import UserDetailedDescription from './UserDetailedDescription';
-import UserDetailedEvents from './UserDetailedEvents';
-import UserDetailedHeader from './UserDetailedHeader';
-import UserDetailedPhotos from './UserDetailedPhotos';
-import UserDetailedSidebar from './UserDetailedSidebar';
-import { userDetailedQuery } from '../userQueries';
-import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { getUserEvents, followUser, unfollowUser } from '../../user/userActions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { firestoreConnect, isEmpty } from "react-redux-firebase";
+import { compose } from "redux";
+import { Grid } from "semantic-ui-react";
+import UserDetailedDescription from "./UserDetailedDescription";
+import UserDetailedEvents from "./UserDetailedEvents";
+import UserDetailedHeader from "./UserDetailedHeader";
+import UserDetailedPhotos from "./UserDetailedPhotos";
+import UserDetailedSidebar from "./UserDetailedSidebar";
+import { userDetailedQuery } from "../userQueries";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import {
+  getUserEvents,
+  followUser,
+  unfollowUser
+} from "../../user/userActions";
 
 const mapState = (state, ownProps) => {
   let userUid = null;
@@ -19,7 +23,9 @@ const mapState = (state, ownProps) => {
   if (ownProps.match.params.id === state.auth.uid) {
     profile = state.firebase.profile;
   } else {
-    profile = !isEmpty(state.firestore.ordered.profile) && state.firestore.ordered.profile[0];
+    profile =
+      !isEmpty(state.firestore.ordered.profile) &&
+      state.firestore.ordered.profile[0];
     userUid = ownProps.match.params.id;
   }
 
@@ -92,6 +98,11 @@ class UserDetailedPage extends Component {
 }
 
 export default compose(
-  connect(mapState, actions),
-  firestoreConnect((auth, userUid, match) => userDetailedQuery(auth, userUid, match))
+  connect(
+    mapState,
+    actions
+  ),
+  firestoreConnect((auth, userUid, match) =>
+    userDetailedQuery(auth, userUid, match)
+  )
 )(UserDetailedPage);
